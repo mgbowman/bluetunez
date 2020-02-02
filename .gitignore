@@ -1,0 +1,4 @@
+*.bak
+/dl
+/buildroot
+/ccache

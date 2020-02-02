@@ -1,0 +1,53 @@
+#!/bin/sh
+
+start() {
+    /usr/libexec/bluetooth/bluetoothd &
+
+    sleep 1
+    #hciconfig hci0 name BlueTuneZ
+    hciconfig hci0 up
+    bluetoothctl power on
+    bluetoothctl discoverable on
+    hciconfig hci0 piscan
+    hciconfig hci0 sspmode 1
+
+    /usr/local/bin/a2dp-agent.py &
+
+    bluealsa -i hci0 -p a2dp-sink &
+
+    sleep 1
+    bluealsa-aplay --pcm-buffer-time=250000 00:00:00:00:00:00 &
+
+    aplay -q /usr/local/share/sounds/complete.wav
+}
+
+stop() {
+    killall bluealsa-play
+    killall bluealsa
+    killall a2dp-agent.py
+    bluetoothctl discoverable off
+    bluetoothctl power off
+    hciconfig hci0 down
+}
+
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

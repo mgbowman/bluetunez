@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ACTION=$1
+
+if [ "$ACTION" = "add" ]; then
+	aplay -q /usr/local/share/sounds/device-added.wav 
+	bluetoothctl discoverable off
+	
+fi
+
+if [ "$ACTION" = "remove" ]; then
+	aplay -q /usr/local/share/sounds/device-removed.wav
+	bluetoothctl discoverable on
+fi
