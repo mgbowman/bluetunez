@@ -299,7 +299,7 @@ $OPT_DO_INSTALL && ($OPT_DO_DISTCLEAN || $OPT_DO_CLEAN || [ ! -f $BR2_SDCARD_IMG
 
 # use --make but missing .config? 
 # add --configure
-$OPT_DO_MAKE && ($OPT_DO_DISTCLEAN || [ ! -f $BR2_CONFIG ]) && OPT_DO_CONFIGURE=true
+$OPT_DO_MAKE && ($OPT_DO_DISTCLEAN || $OPT_DO_CLEAN || [ ! -f $BR2_CONFIG ]) && OPT_DO_CONFIGURE=true
 
 # use --configure but missing the buildroot dir? 
 # add --bootstrap
